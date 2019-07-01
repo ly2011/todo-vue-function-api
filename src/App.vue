@@ -9,6 +9,15 @@
 </template>
 
 <style lang="scss">
+body, html {
+    text-rendering: optimizeLegibility;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
+    height: 100%;
+    color: #ccc;
+    font-size: 16px!important;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
