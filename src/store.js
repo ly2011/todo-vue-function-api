@@ -1,16 +1,64 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
 
-Vue.use(Vuex)
+import { serviceLogin, serviceGetMessageCount } from '@/services'
+import { defaultAvatar } from '@/config'
 
-export default new Vuex.Store({
-  state: {
-
+export const state = Vue.observable({
+  count: 0,
+  accessToken: window.localStorage.access_token || '',
+  isLogin: false,
+  userInfo: {
+    avatar_url: defaultAvatar, // 头像
+    id: '', // 用户 id
+    loginname: '' // 用户名
   },
-  mutations: {
-
-  },
-  actions: {
-
-  }
+  messageCount: 0 // 未读消息数
 })
+
+// 更新登录状态
+function updateLoginStatus (data) {
+  if (data.accessToken) {
+    window.localStorage.access_token = window.localStorage.save_access_token = state.accessToken =
+      data.accessToken
+    state.userInfo = data.userInfo
+  } else {
+    state.userInfo = data
+  }
+  state.isLogin = true
+}
+
+// 登录
+export function login (data) {
+  updateLoginStatus(data)
+  fetchMessageCount()
+}
+
+// 退出登录
+export function logout () {
+  window.localStorage.removeItem('access_token')
+  state.accessToken = ''
+  state.isLogin = false
+}
+
+// 检查是否已登录
+export function checkLogin () {
+  if (state.accessToken) {
+    serviceLogin().then(res => {
+      if (res.success) {
+        updateLoginStatus(res)
+        fetchMessageCount()
+      }
+    })
+  }
+}
+
+// 获取未读消息数
+export function fetchMessageCount () {
+  serviceGetMessageCount().then(res => {
+    if (res.success) {
+      state.messageCount = res.data
+    }
+  })
+}
+
+export default state
