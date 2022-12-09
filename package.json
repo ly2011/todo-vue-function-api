@@ -27,7 +27,7 @@
     "highlight.js": "^9.15.8",
     "iview": "^3.4.2",
     "lint-staged": "^8.1.5",
-    "qs": "^6.7.0",
+    "qs": "^6.7.3",
     "sass": "^1.18.0",
     "sass-loader": "^7.1.0",
     "sass-resources-loader": "^2.0.1",
